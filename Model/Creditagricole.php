@@ -333,7 +333,7 @@ class Creditagricole
             [
             'maxredirects' => 0,
             'useragent' => 'Magento Up2pay e-Transactions module',
-            'timeout' => 5,
+            'timeout' => 30,
             ]
         );
         $clt->setMethod(\Magento\Framework\HTTP\ZendClient::POST);
@@ -541,7 +541,7 @@ class Creditagricole
             [
             'maxredirects' => 0,
             'useragent' => 'Magento Up2pay e-Transactions module',
-            'timeout' => 5,
+            'timeout' => 30,
             ]
         );
         $client->setMethod(\Magento\Framework\HTTP\ZendClient::GET);
