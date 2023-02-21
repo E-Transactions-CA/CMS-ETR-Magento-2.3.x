@@ -37,15 +37,6 @@
             <config_path>payment/etep_threetime/active</config_path>
             <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
         </field>
-        <field id="tt_cctypes" translate="label comment" type="multiselect" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
-            <label>Card type</label>
-            <comment><![CDATA[If you disable E-Carte Bleu, contact the Up2pay e-Transactions support]]></comment>
-            <config_path>payment/etep_threetime/cctypes</config_path>
-            <source_model>CreditAgricole\Etransactions\Model\Admin\Cards\Threetime</source_model>
-            <depends>
-                <field id="active">1</field>
-            </depends>
-        </field>
         <field id="tt_title" translate="label comment" type="text" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="1">
         	<label>Title</label>
             <config_path>payment/etep_threetime/title</config_path>

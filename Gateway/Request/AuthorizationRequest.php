@@ -186,14 +186,16 @@ class AuthorizationRequest implements BuilderInterface
         $values['PBX_SHOPPINGCART'] = $payment->getXmlShoppingCartInformation($order);
         $values['PBX_BILLING'] = $payment->getXmlBillingInformation($order);
 
+        // Check for 3DS exemption
+        if ($payment->getConfigData('exemption_3ds_max_amount') && $orderAmount <= $payment->getConfigData('exemption_3ds_max_amount')) {
+            $values['PBX_SOUHAITAUTHENT'] = '02';
+        }
+
         // Sort parameters for simpler debug
         ksort($values);
 
         // Sign values
-        $sign = $this->signValues($values);
-
-        // Hash HMAC
-        $values['PBX_HMAC'] = $sign;
+        $values['PBX_HMAC'] = $this->signValues($values);
 
         return $values;
     }

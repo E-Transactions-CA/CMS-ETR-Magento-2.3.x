@@ -64,7 +64,6 @@
 "By enabling this feature, an invoice is automatically generated when the payment is accepted by Up2pay e-Transactions","En activant cette fonctionnalité, une facture est automatiquement générée quand le paiement est accepté par Up2pay e-Transactions."
 "In test mode your payments will not be sent to the bank.","En mode test vos paiements ne sont pas envoyés en banque."
 "Internal login provided by Up2pay e-Transactions.","Identifiant interne délivré par Up2pay e-Transactions."
-"Back Office password provided by Up2pay e-Transactions.","Mot de passe du Back-Office délivé par Up2pay e-Transactions."
 "Rank number provided by Up2pay e-Transactions (last 2 digits).","Numéro de rang délivré par Up2pay e-Transactions (les 2 derniers chiffres)."
 "Site number provided by Up2pay e-Transactions.","Numéro de site délivré par Up2pay e-Transactions."
 "If you disable E-Carte Bleu, contact the Up2pay e-Transactions support","Si vous désactivez E-Carte bleue, veuillez contacter le support Up2pay e-Transactions (cf. documentation)."
@@ -86,7 +85,6 @@
 "Login","Identifiant"
 "Delay","Jours de différé"
 "Minimum Order Amount","Montant mini de la commande"
-"Up2pay e-Transactions Back Office password","Mot de passe du Back-Office Up2pay e-Transactions"
 "Payment methods","Moyens de paiement"
 "Rank number","Numéro de rang"
 "Site number","Numéro de site"
@@ -169,3 +167,6 @@
 
 "You notified customer about invoice #%1.","Le client a été notifié de la création de la facture #%1."
 "Captured amount of %1 online.","Montant capturé de %1 en ligne."
+
+"3DS exemption","Exemption 3DS"
+"Enable 3DS exemption means of payment only for orders with amount equal or smaller than the amount configured (let it empty for no condition)","Activer l'exemption 3DS pour les commandes dont le montant est inférieur ou égal au montant indiqué (laissez vide pour ne pas activer cette condition)"

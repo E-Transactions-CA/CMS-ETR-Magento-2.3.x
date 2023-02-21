@@ -32,11 +32,11 @@ define(
         rendererList.push(
             {
                 type: 'etep_cb',
-                component: 'CreditAgricole_Etransactions/js/view/payment/method-renderer/etep_multi-method'
+                component: 'CreditAgricole_Etransactions/js/view/payment/method-renderer/etep_simple-method'
             },
             {
                 type: 'etep_threetime',
-                component: 'CreditAgricole_Etransactions/js/view/payment/method-renderer/etep_multi-method'
+                component: 'CreditAgricole_Etransactions/js/view/payment/method-renderer/etep_simple-method'
             },
             {
                 type: 'etep_paypal',

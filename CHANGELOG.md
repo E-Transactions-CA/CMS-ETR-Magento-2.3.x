@@ -1,4 +1,12 @@
 # Change Log
+## [2.0.6] 2023-02-08
+- Add 3DS exemption
+- Update 3DSv2 fields
+- HMAC auth
+- Fix Magento 2.4.5 & PHP 8 compatibility
+- Set CB mode to simple mode instead of multi
+- Fix possible invalid value for CountryCode
+
 ## [2.0.4] 2021-03-16
 - fixing name of model Creditagricole
 

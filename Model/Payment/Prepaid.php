@@ -24,19 +24,12 @@ namespace CreditAgricole\Etransactions\Model\Payment;
 class Prepaid extends AbstractPayment
 {
     const CODE = 'etep_prepaid';
-    const XML_PATH = 'payment/etep_prepaid/cctypes';
 
     protected $_code = self::CODE;
     protected $_hasCctypes = true;
     protected $_allowManualDebit = true;
     protected $_allowDeferredDebit = true;
     protected $_allowRefund = true;
-
-    public function getReceipentEmail()
-    {
-        $storeScope = \Magento\Store\Model\ScopeInterface::SCOPE_STORE;
-        return $this->_scopeConfig->getValue(self::XML_PATH, $storeScope);
-    }
 
     public function toOptionArray()
     {

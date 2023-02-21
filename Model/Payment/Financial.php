@@ -32,12 +32,6 @@ class Financial extends AbstractPayment
     protected $_allowDeferredDebit = true;
     protected $_allowRefund = true;
 
-    public function getReceipentEmail()
-    {
-        $storeScope = \Magento\Store\Model\ScopeInterface::SCOPE_STORE;
-        return $this->_scopeConfig->getValue(self::XML_PATH, $storeScope);
-    }
-
     public function toOptionArray()
     {
         $result = [];

@@ -41,7 +41,6 @@ class Config extends \Magento\Payment\Model\Config
         'hmacKey' => 'merchant/hmackey',
         'identifier' => 'merchant/identifier',
         'languages' => 'languages',
-        'password' => 'merchant/password',
         'rank' => 'merchant/rank',
         'site' => 'merchant/site',
         'subscription' => 'merchant/subscription',
@@ -174,18 +173,6 @@ class Config extends \Magento\Payment\Model\Config
     public function getHmacKey()
     {
         $value = $this->_getConfigValue('etep/merchant/hmackey');
-        return $value;
-    }
-
-    public function getPassword()
-    {
-        $value = $this->_getConfigValue('etep/merchant/password');
-        return $value;
-    }
-
-    public function getPasswordplus()
-    {
-        $value = $this->_getConfigValue('etep/merchant/passwordplus');
         return $value;
     }
 

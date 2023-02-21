@@ -30,15 +30,6 @@
             <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
             <config_path>payment/etep_cb/active</config_path>
         </field>
-        <field id="cctypes" translate="label comment" type="multiselect" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
-            <label>Card type</label>
-            <comment><![CDATA[If you disable E-Carte Bleu, contact the Up2pay e-Transactions support]]></comment>
-            <config_path>payment/etep_cb/cctypes</config_path>
-            <source_model>CreditAgricole\Etransactions\Model\Admin\Cards\Cb</source_model>
-            <depends>
-                <field id="active">1</field>
-            </depends>
-        </field>
         <field id="title" translate="label comment" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
             <label>Title</label>
             <config_path>payment/etep_cb/title</config_path>
@@ -70,6 +61,15 @@
                 <field id="payment_action">deferred</field>
                 <field id="active">1</field>
             </depends>
+        </field>
+        <field id="exemption_3ds_max_amount" translate="label comment" type="text" sortOrder="6" showInDefault="1" showInWebsite="1" showInStore="1">
+            <label>3DS exemption</label>
+            <comment><![CDATA[Enable 3DS exemption means of payment only for orders with amount equal or smaller than the amount configured (let it empty for no condition)]]></comment>
+            <config_path>payment/etep_cb/exemption_3ds_max_amount</config_path>
+            <depends>
+                <field id="active">1</field>
+            </depends>
+            <validate>validate-number-range number-range-0-30</validate>
         </field>
 
         <group id="etep_cb_status" translate="label" showInDefault="1" showInWebsite="1" sortOrder="10">

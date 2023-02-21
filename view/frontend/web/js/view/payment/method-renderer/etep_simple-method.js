@@ -18,17 +18,17 @@
  * @license   LicenseLicense
  * @link      LicenseLink
  */
- /*browser:true*/
- /*global define*/
- define(
-     [
-     'jquery',
-     'Magento_Checkout/js/view/payment/default',
-     'CreditAgricole_Etransactions/js/action/set-payment-method',
-     'Magento_Checkout/js/model/full-screen-loader',
-     'mage/url',
-     ],
-     function ($, Component, setPaymentMethodAction, fullScreenLoader,url) {
+/*browser:true*/
+/*global define*/
+define(
+    [
+        'jquery',
+        'Magento_Checkout/js/view/payment/default',
+        'CreditAgricole_Etransactions/js/action/set-payment-method',
+        'Magento_Checkout/js/model/full-screen-loader',
+        'mage/url',
+    ],
+    function ($, Component, setPaymentMethodAction, fullScreenLoader, url) {
         'use strict';
 
         return Component.extend({
@@ -38,8 +38,8 @@
             },
             initObservable: function () {
                 this._super()
-                .observe([
-                    'billingAgreement'
+                    .observe([
+                        'billingAgreement'
                     ]);
                 return this;
             },
@@ -59,16 +59,19 @@
             },
             continueToCreditAgricole: function () {
                 this.redirectAfterPlaceOrder = false;
-                    this.selectPaymentMethod(); // save selected payment method in Quote
-                    setPaymentMethodAction(this.messageContainer);
-                    this.placeOrder();
-                    return false;
-                },
-                /** Redirect to Genericclass */
-                afterPlaceOrder: function (lastOrderId) {
-                    $.mage.cookies.set('lastOrderId', lastOrderId);
-                    $.mage.redirect(url.build('etep/payment/redirect/'));
-                }
-            });
-     }
- );
+                // this.selectPaymentMethod();
+                const currentComponent = this;
+                // save selected payment method in Quote
+                setPaymentMethodAction(this.messageContainer).done(function () {
+                    currentComponent.placeOrder();
+                });
+                return false;
+            },
+            /** Redirect to Genericclass */
+            afterPlaceOrder: function (lastOrderId) {
+                $.mage.cookies.set('lastOrderId', lastOrderId);
+                $.mage.redirect(url.build('etep/payment/redirect/'));
+            }
+        });
+    }
+);

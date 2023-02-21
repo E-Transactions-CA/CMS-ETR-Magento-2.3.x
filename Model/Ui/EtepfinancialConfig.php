@@ -66,12 +66,6 @@ class EtepfinancialConfig
         $this->scopeConfig = $scopeConfig;
     }
 
-    public function getReceipentEmail()
-    {
-        $storeScope = \Magento\Store\Model\ScopeInterface::SCOPE_STORE;
-        return $this->scopeConfig->getValue(self::PAYMENT_METHOD_ETEPFINANCIAL_XML_PATH, $storeScope);
-    }
-
     /**
      * @return string
      */

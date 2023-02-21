@@ -283,17 +283,14 @@ class Creditagricole
         $transNumber = $transaction->getAdditionalInformation(AbstractPayment::TRANSACTION_NUMBER);
 
         $version = '00103';
-        $password = $config->getPassword();
         if ($config->getSubscription() == 'premium') {
             $version = '00104';
-            $password = $config->getPasswordplus();
         }
 
         $now = new \DateTime('now', new \DateTimeZone('Europe/Paris'));
         $fields = [
             'ACTIVITE' => '024',
             'VERSION' => $version,
-            'CLE' => $password,
             'DATEQ' => $now->format('dmYHis'),
             'DEVISE' => sprintf('%03d', $this->getCurrency($order)),
             'IDENTIFIANT' => $config->getIdentifier(),
@@ -305,6 +302,7 @@ class Creditagricole
             'REFERENCE' => $this->tokenizeOrder($order),
             'SITE' => sprintf('%07d', $config->getSite()),
             'TYPE' => sprintf('%05d', (int) $type),
+            'HASH' => strtoupper($config->getHmacAlgo()),
         ];
 
         // Specific Paypal
@@ -319,10 +317,7 @@ class Creditagricole
         ksort($fields);
 
         // Sign values
-        $sign = $this->signValues($fields);
-
-        // Hash HMAC
-        $fields['HMAC'] = $sign;
+        $fields['HMAC'] = $this->signValues($fields);
 
         $urls = $config->getDirectUrls();
         $url = $this->checkUrls($urls);
@@ -452,7 +447,8 @@ class Creditagricole
             $values['PBX_SOURCE'] = 'RWD';
         }
 
-        //Paypal Specicif
+        // PayPal specific code
+        /*
         if ($payment->getCode() == 'etep_paypal') {
             $separator = '#';
             $address = $order->getBillingAddress();
@@ -481,6 +477,7 @@ class Creditagricole
             $data_Paypal .= $this->cleanForPaypalData(implode('-', $products), 127);
             $values['PBX_PAYPAL_DATA'] = $this->cleanForPaypalData($data_Paypal, 490);
         }
+        */
 
         // Misc.
         $values['PBX_TIME'] = date('c');
@@ -508,14 +505,16 @@ class Creditagricole
         $values['PBX_SHOPPINGCART'] = $payment->getXmlShoppingCartInformation($order);
         $values['PBX_BILLING'] = $payment->getXmlBillingInformation($order);
 
+        // Check for 3DS exemption
+        if ($payment->getConfigData('exemption_3ds_max_amount') && $orderAmount <= $payment->getConfigData('exemption_3ds_max_amount')) {
+            $values['PBX_SOUHAITAUTHENT'] = '02';
+        }
+
         // Sort parameters for simpler debug
         ksort($values);
 
         // Sign values
-        $sign = $this->signValues($values);
-
-        // Hash HMAC
-        $values['PBX_HMAC'] = $sign;
+        $values['PBX_HMAC'] = $this->signValues($values);
 
         return $values;
     }
@@ -792,7 +791,12 @@ class Creditagricole
 
         // Prepare key
         $hmac = $config->getHmacKey();
-        $key = pack('H*', $hmac);
+        try {
+            $key = pack('H*', $hmac);
+        } catch (\Exception $e) {
+            $errorMsg = 'Unable to create hmac signature. Maybe a wrong configuration.';
+            throw new \LogicException(__($errorMsg));
+        }
 
         // Sign values
         $sign = hash_hmac($config->getHmacAlgo(), $query, $key);

@@ -60,6 +60,11 @@ final class EteppaybuttonsConfigProvider implements ConfigProviderInterface
 
         $cards = [];
         $types = $eteppaybuttonsConfig->getCards();
+
+        if (is_null($types)) {
+            return $cards;
+        }
+
         if (!is_array($types)) {
             $types = explode(',', $types);
         }

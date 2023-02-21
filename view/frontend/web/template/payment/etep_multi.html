@@ -58,8 +58,9 @@
                             <br />
                             <input data-bind="attr: {
                                 'type': 'radio',
-                                'name': 'payment[cc_type]',
-                                'value': value
+                                'name': $parent.getCode() + '_payment[cc_type]',
+                                'value': value,
+                                'checked': $index() == 0 ? 'checked' : false
                                 }" />
                         </label>
 	                    <!--/ko-->

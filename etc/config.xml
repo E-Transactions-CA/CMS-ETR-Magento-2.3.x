@@ -29,8 +29,6 @@
                 <site>9999999</site>
                 <rank>95</rank>
                 <identifier>259207933</identifier>
-                <password backend_model="Magento\Config\Model\Config\Backend\Encrypted">1999888I</password>
-                <passwordplus backend_model="Magento\Config\Model\Config\Backend\Encrypted">1999888I</passwordplus>
                 <hmackey backend_model="Magento\Config\Model\Config\Backend\Encrypted">0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF</hmackey>
                 <hmacalgo>SHA512</hmacalgo>
                 <min_amount></min_amount>
@@ -65,6 +63,7 @@
                 <status_authorized>etep_authorized</status_authorized>
                 <payment_action>immediate</payment_action>
                 <delay>1</delay>
+                <exemption_3ds_max_amount></exemption_3ds_max_amount>
                 <cards>
                     <CB>
                         <label>CB</label>

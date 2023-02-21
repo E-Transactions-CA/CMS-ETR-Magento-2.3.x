@@ -26,19 +26,11 @@ use \Magento\Sales\Model\Order;
 class Cb extends AbstractPayment
 {
     const CODE = 'etep_cb';
-    const XML_PATH = 'payment/etep_cb/cctypes';
 
     protected $_code = self::CODE;
-    protected $_hasCctypes = true;
     protected $_allowManualDebit = true;
     protected $_allowDeferredDebit = true;
     protected $_allowRefund = true;
-
-    public function getReceipentEmail()
-    {
-        $storeScope = \Magento\Store\Model\ScopeInterface::SCOPE_STORE;
-        return $this->_scopeConfig->getValue(self::XML_PATH, $storeScope);
-    }
 
     public function toOptionArray()
     {

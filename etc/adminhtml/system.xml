@@ -91,26 +91,6 @@
                     <config_path>etep/merchant/hmackey</config_path>
                     <backend_model>Magento\Config\Model\Config\Backend\Encrypted</backend_model>
                 </field>
-                <field id="password" translate="label comment" type="obscure" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Up2pay e-Transactions Back Office password</label>
-                    <comment><![CDATA[Back Office password provided by Up2pay e-Transactions.]]></comment>
-                    <validate>required-entry</validate>
-                    <depends>
-                        <field id="subscription">access</field>
-                    </depends>
-                    <config_path>etep/merchant/password</config_path>
-                    <backend_model>Magento\Config\Model\Config\Backend\Encrypted</backend_model>
-                </field>
-                <field id="passwordplus" translate="label comment" type="obscure" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Up2pay e-Transactions Back Office password</label>
-                    <comment><![CDATA[Back Office password provided by Up2pay e-Transactions.]]></comment>
-                    <validate>required-entry</validate>
-                    <depends>
-                        <field id="subscription">premium</field>
-                    </depends>
-                    <config_path>etep/merchant/passwordplus</config_path>
-                    <backend_model>Magento\Config\Model\Config\Backend\Encrypted</backend_model>
-                </field>
             </group>
 	        <group id="misc" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
 	            <attribute type="expanded">1</attribute>
@@ -167,4 +147,3 @@
         </section>
     </system>
 </config>
-
