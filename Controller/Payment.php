@@ -38,6 +38,7 @@ class Payment extends \Magento\Framework\App\Action\Action implements CsrfAwareA
     protected $_creditagricoleConfig;
     protected $_creditagricole;
     protected $_registry;
+    protected $_messageManager;
 
     /**
      * @param \Magento\Framework\App\Action\Context                        $context

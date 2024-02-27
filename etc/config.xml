@@ -44,7 +44,7 @@
                 <pt>PRT</pt>
                 <default>GBR</default>
             </languages>
-            <allowedips>194.2.122.158,195.25.7.166,195.101.99.76,10.48.2.254</allowedips>
+            <allowedips>194.2.122.190,195.25.67.22</allowedips>
         </etep>
         <payment>
             <etep_cb>
