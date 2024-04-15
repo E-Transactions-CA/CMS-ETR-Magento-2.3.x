@@ -29,6 +29,11 @@ use Magento\Framework\App\Config\Storage\WriterInterface;
 class UpgradeData implements UpgradeDataInterface
 {
     /**
+     * @var WriterInterface
+     */
+    protected $writerInterface;
+
+    /**
      * {@inheritdoc}
      *
      * @param WriterInterface $writerInterface

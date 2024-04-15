@@ -23,6 +23,11 @@ namespace CreditAgricole\Etransactions\Controller\Adminhtml\Capture;
 
 class Index extends \Magento\Backend\App\Action
 {
+    /**
+     * @var \Magento\Framework\View\Result\PageFactory
+     */
+    protected $resultPageFactory;
+
     public function __construct(
         \Magento\Backend\App\Action\Context $context,
         \Magento\Framework\View\Result\PageFactory $resultPageFactory

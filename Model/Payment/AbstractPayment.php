@@ -596,6 +596,11 @@ abstract class AbstractPayment extends AbstractMethod
         A : Alphabetic only
         */
 
+        // Handle possible null values
+        if (!is_string($value)) {
+            $value = '';
+        }
+
         switch ($type) {
             default:
             case 'AN':
@@ -681,8 +686,18 @@ abstract class AbstractPayment extends AbstractMethod
             $countryCode = '';
         }
 
+        $mobilePhoneIntCode = $countryMapper->getPhoneCode($address->getCountryId());
+        $mobilePhoneNumber = $this->formatTextValue($address->getTelephone(), 'N', 10);
+        $mobilePhoneNumberFormat = '%d';
+        if (empty($mobilePhoneIntCode) || empty($mobilePhoneNumber)) {
+            // Send empty string to MobilePhone instead of 0
+            $mobilePhoneNumberFormat = '%s';
+            $mobilePhoneNumber = '';
+        }
+        $mobilePhone = sprintf('<CountryCodeMobilePhone>%s</CountryCodeMobilePhone><MobilePhone>' . $mobilePhoneNumberFormat . '</MobilePhone>', $mobilePhoneIntCode, $mobilePhoneNumber);
+
         $xml = sprintf(
-            '<?xml version="1.0" encoding="utf-8"?><Billing><Address><FirstName>%s</FirstName><LastName>%s</LastName><Address1>%s</Address1><Address2>%s</Address2><ZipCode>%s</ZipCode><City>%s</City><CountryCode>' . $countryCodeFormat . '</CountryCode></Address></Billing>',
+            '<?xml version="1.0" encoding="utf-8"?><Billing><Address><FirstName>%s</FirstName><LastName>%s</LastName><Address1>%s</Address1><Address2>%s</Address2><ZipCode>%s</ZipCode><City>%s</City><CountryCode>' . $countryCodeFormat . '</CountryCode>' . $mobilePhone . '</Address></Billing>',
             $firstName,
             $lastName,
             $addressLine1,
