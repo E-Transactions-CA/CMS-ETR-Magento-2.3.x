@@ -155,11 +155,14 @@ abstract class AbstractPayment extends AbstractMethod
             if (!empty($parent)) {
                 $txnId = $parent->getAdditionalInformation(self::TRANSACTION_NUMBER);
             } else {
-                throw new \LogicException('Invalid transaction id ' . $txnId);
+                // Possible if payment failed.
+                // throw new \LogicException('Invalid transaction id ' . $txnId);
             }
         }
 
-        $payment->setTransactionId($txnId);
+        if (!empty($txnId)) {
+            $payment->setTransactionId($txnId);
+        }
         $payment->setParentTransactionId(null);
         $transaction = $type;
         $transaction = $payment->addTransaction($transaction);
@@ -690,11 +693,11 @@ abstract class AbstractPayment extends AbstractMethod
         $mobilePhoneNumber = $this->formatTextValue($address->getTelephone(), 'N', 10);
         $mobilePhoneNumberFormat = '%d';
         if (empty($mobilePhoneIntCode) || empty($mobilePhoneNumber)) {
-            // Send empty string to MobilePhone instead of 0
-            $mobilePhoneNumberFormat = '%s';
-            $mobilePhoneNumber = '';
+            // Do not send CountryCodeMobilePhone & MobilePhone
+            $mobilePhone = '';
+        } else {
+            $mobilePhone = sprintf('<CountryCodeMobilePhone>%s</CountryCodeMobilePhone><MobilePhone>' . $mobilePhoneNumberFormat . '</MobilePhone>', $mobilePhoneIntCode, $mobilePhoneNumber);
         }
-        $mobilePhone = sprintf('<CountryCodeMobilePhone>%s</CountryCodeMobilePhone><MobilePhone>' . $mobilePhoneNumberFormat . '</MobilePhone>', $mobilePhoneIntCode, $mobilePhoneNumber);
 
         $xml = sprintf(
             '<?xml version="1.0" encoding="utf-8"?><Billing><Address><FirstName>%s</FirstName><LastName>%s</LastName><Address1>%s</Address1><Address2>%s</Address2><ZipCode>%s</ZipCode><City>%s</City><CountryCode>' . $countryCodeFormat . '</CountryCode>' . $mobilePhone . '</Address></Billing>',
@@ -953,11 +956,11 @@ abstract class AbstractPayment extends AbstractMethod
                 return false;
             }
 
-            // Payment success
             if (in_array($params['error'], ['00000', '00200', '00201', '00300', '00301', '00302', '00303'])) {
+                // Payment success
                 $this->onIPNSuccess($order, $params);
-            } // Payment refused
-            else {
+            } else {
+                // Payment refused
                 $this->onIPNFailed($order, $params);
             }
 
@@ -977,13 +980,12 @@ abstract class AbstractPayment extends AbstractMethod
      */
     public function onIPNError(Order $order, array $data, \Exception $e = null)
     {
-        $withCapture = $this->getConfigPaymentAction() != AbstractMethod::ACTION_AUTHORIZE;
+        // $withCapture = $this->getConfigPaymentAction() != AbstractMethod::ACTION_AUTHORIZE;
 
         // Message
         $message = 'An unexpected error have occured while processing Up2pay e-Transactions payment (%s).';
         $error = is_null($e) ? 'unknown error' : $e->getMessage();
-        $error = __($error);
-        $message = __($message, $error);
+        $message = sprintf(__($message), $error);
         $data['status'] = $message;
         $status = $order->addStatusHistoryComment($message);
         $status->save();

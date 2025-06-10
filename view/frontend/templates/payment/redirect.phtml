@@ -8,7 +8,7 @@
  * LICENSE: This source file is subject to the version 3.0 of the Open
  * Software License (OSL-3.0) that is available through the world-wide-web
  * at the following URI: http://opensource.org/licenses/OSL-3.0. If
- * you did not receive a copy of the OSL-3.0 license and are unable 
+ * you did not receive a copy of the OSL-3.0 license and are unable
  * to obtain it through the web, please send a note to
  * support@e-transactions.fr so we can mail you a copy immediately.
  *
@@ -22,24 +22,7 @@
 
 $values = $this->getFormFields();
 try {
-	if ($values['PBX_TYPEPAIEMENT'] == 'KWIXO') {
-		$url = $this->escapeUrl($this->getKwixoUrl());
-	}
-	else if ($this->helper('CreditAgricole\Etransactions\Helper\Mobile')->isMobile()) {
-		$url = $this->escapeUrl($this->getMobileUrl());
-	}
-	else {
-		if(isset($values['PBX_SOURCE'])){
-			if($values['PBX_SOURCE'] == 'RWD'){
-				$url = $this->escapeUrl($this->getResponsiveUrl());
-			}else{
-				$url = $this->escapeUrl($this->getSystemUrl());
-			}
-		}
-		else{
-			$url = $this->escapeUrl($this->getSystemUrl());
-		}
-	}
+	$url = $this->escapeUrl($this->getSystemUrl());
 	$type = $this->escapeUrl($this->getInputType());
 }
 catch (\Exception $e) {

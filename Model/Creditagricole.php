@@ -28,6 +28,11 @@ use CreditAgricole\Etransactions\Helper\Utf8Data;
 
 class Creditagricole
 {
+    /**
+     * @var int
+     */
+    const ORDER_TOKEN_METHOD = 1;
+
     private $_currencyDecimals = [
         '008' => 2,
         '012' => 2,
@@ -436,14 +441,7 @@ class Creditagricole
         $lang = $languages[$lang];
         $values['PBX_LANGUE'] = $lang;
 
-        // Choose page format depending on browser/devise
-        if ($this->_objectManager->get('CreditAgricole\Etransactions\Helper\Mobile')->isMobile()) {
-            $values['PBX_SOURCE'] = 'XHTML';
-        }
-
-        if ($config->getResponsiveConfig() == 1) {
-            $values['PBX_SOURCE'] = 'RWD';
-        }
+        $values['PBX_SOURCE'] = 'RWD';
 
         // PayPal specific code
         /*
@@ -667,8 +665,7 @@ class Creditagricole
             $data = $_SERVER['QUERY_STRING'];
         }
         if (empty($data)) {
-            throw new \LogicException("Error Processing Request");
-            (__('An unexpected error in Up2pay e-Transactions call has occured: no parameters.'));
+            throw new \LogicException(sprintf('Error Processing Request: %s', __('An unexpected error in Up2pay e-Transactions call has occured: no parameters.')));
         }
 
         // Log params if needed
@@ -681,8 +678,7 @@ class Creditagricole
             // Extract signature
             $matches = [];
             if (!preg_match('#^(.*)&K=(.*)$#', $data, $matches)) {
-                throw new \LogicException("Error Processing Request");
-                (__('An unexpected error in Up2pay e-Transactions call has occured: missing signature.'));
+                throw new \LogicException(sprintf('Error Processing Request: %s', __('An unexpected error in Up2pay e-Transactions call has occured: missing signature.')));
             }
 
             // Check signature
@@ -697,8 +693,7 @@ class Creditagricole
                 }
 
                 if (!$res) {
-                    throw new \LogicException("Error Processing Request");
-                    (__('An unexpected error in Up2pay e-Transactions call has occured: invalid signature.'));
+                    throw new \LogicException(sprintf('Error Processing Request: %s', __('An unexpected error in Up2pay e-Transactions call has occured: invalid signature.')));
                 }
             }
         }
@@ -719,34 +714,6 @@ class Creditagricole
     {
         $config = $this->getConfig();
         $urls = $config->getSystemUrls();
-        if (empty($urls)) {
-            $message = 'Missing URL for Up2pay e-Transactions system in configuration';
-            throw new \LogicException(__($message));
-        }
-
-        $url = $this->checkUrls($urls);
-
-        return $url;
-    }
-
-    public function getResponsiveUrl()
-    {
-        $config = $this->getConfig();
-        $urls = $config->getResponsiveUrls();
-        if (empty($urls)) {
-            $message = 'Missing URL for Up2pay e-Transactions responsive in configuration';
-            throw new \LogicException(__($message));
-        }
-
-        $url = $this->checkUrls($urls);
-
-        return $url;
-    }
-
-    public function getKwixoUrl()
-    {
-        $config = $this->getConfig();
-        $urls = $config->getKwixoUrls();
         if (empty($urls)) {
             $message = 'Missing URL for Up2pay e-Transactions system in configuration';
             throw new \LogicException(__($message));
@@ -818,10 +785,23 @@ class Creditagricole
     public function tokenizeOrder(Order $order)
     {
         $reference = [];
+
+        if (self::ORDER_TOKEN_METHOD == 1) {
+            $reference[] = 'mg';
+        }
+
         $reference[] = $order->getRealOrderId();
         $reference[] = $this->getBillingName($order);
-        $reference = implode(' - ', $reference);
-        return $reference;
+
+        if (self::ORDER_TOKEN_METHOD == 1) {
+            $now = new \DateTime('now', new \DateTimeZone('Europe/Paris'));
+            $reference[] = $now->format('His');
+            $orderToken = implode('_', $reference);
+        } else {
+            $orderToken = implode(' - ', $reference);
+        }
+
+        return $orderToken;
     }
 
     /**
@@ -832,14 +812,25 @@ class Creditagricole
      */
     public function untokenizeOrder($token)
     {
-        $parts = explode(' - ', $token, 2);
-        if (count($parts) < 2) {
+        $maxParts = 2;
+        $idOrderPartIndex = 0;
+        $billingNamePartIndex = 1;
+        $tokenSeparator = ' - ';
+        if (self::ORDER_TOKEN_METHOD == 1) {
+            $idOrderPartIndex = 1;
+            $billingNamePartIndex = 2;
+            $maxParts = 4;
+            $tokenSeparator = '_';
+        }
+
+        $parts = explode($tokenSeparator, $token, $maxParts);
+        if (count($parts) < $maxParts) {
             $message = 'Invalid decrypted token "%s"';
             throw new \LogicException(__($message, $token));
         }
 
         // Retrieves order
-        $order = $this->_objectManager->get('\Magento\Sales\Model\Order')->loadByIncrementId($parts[0]);
+        $order = $this->_objectManager->get('\Magento\Sales\Model\Order')->loadByIncrementId($parts[$idOrderPartIndex]);
         if (empty($order)) {
             $message = 'Not existing order id from decrypted token "%s"';
             throw new \LogicException(__($message, $token));
@@ -850,7 +841,7 @@ class Creditagricole
         }
 
         $goodName = $this->getBillingName($order);
-        if (($goodName != Utf8Data::decode($parts[1])) && ($goodName != $parts[1])) {
+        if (($goodName != Utf8Data::decode($parts[$billingNamePartIndex])) && ($goodName != $parts[$billingNamePartIndex])) {
             $message = 'Consistency error on descrypted token "%s"';
             throw new \LogicException(__($message, $token));
         }

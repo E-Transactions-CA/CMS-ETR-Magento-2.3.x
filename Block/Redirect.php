@@ -56,31 +56,10 @@ class Redirect extends \Magento\Framework\View\Element\Template
         return 'hidden';
     }
 
-    public function getKwixoUrl()
-    {
-        $creditagricole = $this->_objectManager->get('CreditAgricole\Etransactions\Model\Creditagricole');
-        $urls = $creditagricole->getConfig()->getKwixoUrls();
-        return $creditagricole->checkUrls($urls);
-    }
-
-    public function getMobileUrl()
-    {
-        $creditagricole = $this->_objectManager->get('CreditAgricole\Etransactions\Model\Creditagricole');
-        $urls = $creditagricole->getConfig()->getMobileUrls();
-        return $creditagricole->checkUrls($urls);
-    }
-
     public function getSystemUrl()
     {
         $creditagricole = $this->_objectManager->get('CreditAgricole\Etransactions\Model\Creditagricole');
         $urls = $creditagricole->getConfig()->getSystemUrls();
-        return $creditagricole->checkUrls($urls);
-    }
-
-    public function getResponsiveUrl()
-    {
-        $creditagricole = $this->_objectManager->get('CreditAgricole\Etransactions\Model\Creditagricole');
-        $urls = $creditagricole->getConfig()->getResponsiveUrls();
         return $creditagricole->checkUrls($urls);
     }
 }

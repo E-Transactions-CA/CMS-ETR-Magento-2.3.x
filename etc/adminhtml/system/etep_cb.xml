@@ -69,7 +69,7 @@
             <depends>
                 <field id="active">1</field>
             </depends>
-            <validate>validate-number-range number-range-0-30</validate>
+            <validate>validate-number-range number-range-0-100</validate>
         </field>
 
         <group id="etep_cb_status" translate="label" showInDefault="1" showInWebsite="1" sortOrder="10">
@@ -140,7 +140,7 @@
             </field>
             <field id="specificcountry" translate="label comment" type="multiselect" sortOrder="220" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>Payment from Specific Countries</label>
-                <source_model>Magento\Paypal\Model\System\Config\Source\BuyerCountry</source_model>
+                <source_model>Magento\Directory\Model\Config\Source\Country</source_model>
                 <config_path>payment/etep_cb/specificcountry</config_path>
                 <depends>
                     <field id="allowspecific">1</field>

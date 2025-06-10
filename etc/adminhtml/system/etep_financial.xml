@@ -84,7 +84,7 @@
 	        </field>
 	        <field id="specificcountry" translate="label comment" type="multiselect" sortOrder="220" showInDefault="1" showInWebsite="1" showInStore="1">
 	        	<label>Payment from Specific Countries</label>
-	        	<source_model>Magento\Paypal\Model\System\Config\Source\BuyerCountry</source_model>
+	        	<source_model>Magento\Directory\Model\Config\Source\Country</source_model>
 	        	<config_path>payment/etep_financial/specificcountry</config_path>
 	        	<depends>
 	                <field id="allowspecific">1</field>

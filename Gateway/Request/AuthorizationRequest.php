@@ -159,11 +159,6 @@ class AuthorizationRequest implements BuilderInterface
         $lang = $languages[$lang];
         $values['PBX_LANGUE'] = $lang;
 
-        // Choose page format depending on browser/devise
-        if ($this->_objectManager->get('CreditAgricole\Etransactions\Helper\Mobile')->isMobile()) {
-            $values['PBX_SOURCE'] = 'XHTML';
-        }
-
         $values['PBX_SOURCE'] = 'RWD';
 
         // Misc.
