@@ -1,4 +1,9 @@
 # Change Log
+## [2.0.10] 2026-01-20
+- Update public key
+- PBX_CMD changes
+- Fixes some deprecated on PHP 8.4
+
 ## [2.0.9] 2025-06-10
 - Improve IPN error logging
 - Fix unwanted exceptions on some refused payment

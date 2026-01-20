@@ -390,6 +390,7 @@ class Creditagricole
         $values['PBX_PORTEUR'] = $this->getBillingEmail($order);
         $values['PBX_DEVISE'] = $this->getCurrency($order);
         $values['PBX_CMD'] = $this->tokenizeOrder($order);
+        $values['PBX_SIGN_KEYSIZE'] = 2048;
 
         // Amount
         $currencies = $this->_storeManager->getStore()->getAvailableCurrencyCodes();
@@ -623,6 +624,9 @@ class Creditagricole
         $name = $this->_objectManager->get('Magento\Framework\Filter\RemoveAccents')->filter($name);
         $name = str_replace(' - ', '-', $name);
         $name = trim(preg_replace('/[^-. a-zA-Z0-9]/', ' ', $name));
+        if (self::ORDER_TOKEN_METHOD == 1) {
+            $name = str_replace(' ', '-', $name);
+        }
         return $name;
     }
 

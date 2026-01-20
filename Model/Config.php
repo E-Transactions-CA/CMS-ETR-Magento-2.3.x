@@ -51,8 +51,8 @@ class Config extends \Magento\Payment\Model\Config
                 'https://preprod-tpeweb.e-transactions.fr/php/'
             ],
             'production' => [
-                'https://tpeweb.e-transactions.fr/php/',
                 'https://tpeweb1.e-transactions.fr/php/',
+                'https://tpeweb.e-transactions.fr/php/',
             ],
         ],
         'direct' => [
