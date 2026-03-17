@@ -88,7 +88,7 @@ class Info extends ConfigurableInfo
             return [];
         }
 
-        return unserialize($this->getInfo()->getEtepAuthorization());
+        return unserialize($this->getInfo()->getEtepAuthorization(), ['allowed_classes' => false]);
     }
 
     public function getObjectManager()
@@ -203,19 +203,19 @@ class Info extends ConfigurableInfo
         ];
         $data = $info->getEtepFirstPayment();
         if (!empty($data)) {
-            $data = unserialize($data);
+            $data = unserialize($data, ['allowed_classes' => false]);
             $date = (isset($data['date']) ? preg_replace('/^([0-9]{2})([0-9]{2})([0-9]{4})$/', '$1/$2/$3', $data['date']) : 'N/A');
             $result['first'] = sprintf('%s (%s)', $data['amount'] / 100.0, $date);
         }
         $data = $info->getEtepSecondPayment();
         if (!empty($data)) {
-            $data = unserialize($data);
+            $data = unserialize($data, ['allowed_classes' => false]);
             $date = (isset($data['date']) ? preg_replace('/^([0-9]{2})([0-9]{2})([0-9]{4})$/', '$1/$2/$3', $data['date']) : 'N/A');
             $result['second'] = sprintf('%s (%s)', $data['amount'] / 100.0, $date);
         }
         $data = $info->getEtepThirdPayment();
         if (!empty($data)) {
-            $data = unserialize($data);
+            $data = unserialize($data, ['allowed_classes' => false]);
             $date = (isset($data['date']) ? preg_replace('/^([0-9]{2})([0-9]{2})([0-9]{4})$/', '$1/$2/$3', $data['date']) : 'N/A');
             $result['third'] = sprintf('%s (%s)', $data['amount'] / 100.0, $date);
         }

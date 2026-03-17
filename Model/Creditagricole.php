@@ -661,6 +661,36 @@ class Creditagricole
         return pow(10, $this->getCurrencyDecimals($cartOrOrder));
     }
 
+    /**
+     * Check IPN signature using specific key
+     *
+     * @param string $data
+     * @param string $keyFile
+     * @return bool
+     */
+    protected function checkSignature($data, $keyFile = 'pubkey.pem')
+    {
+        // Extract signature
+        $matches = [];
+        if (!preg_match('#^(.*)&K=(.*)$#', $data, $matches)) {
+            throw new \LogicException(sprintf('Error Processing Request: %s', __('An unexpected error in Up2pay e-Transactions call has occured: missing signature.')));
+        }
+
+        // Check signature
+        $signature = base64_decode(urldecode($matches[2]));
+        $pubkey = file_get_contents(dirname(__FILE__) . '/../etc/' . basename($keyFile));
+        $res = (boolean) openssl_verify($matches[1], $signature, $pubkey);
+
+        if (!$res) {
+            if (preg_match('#^C=IDEAL&P=PREPAYEE&(.*)&K=(.*)$#', $data, $matches)) {
+                $signature = base64_decode(urldecode($matches[2]));
+                $res = (boolean) openssl_verify($matches[1], $signature, $pubkey);
+            }
+        }
+
+        return $res;
+    }
+
     public function getParams($logParams = false, $checkSign = true)
     {
         // Retrieves data
@@ -679,26 +709,9 @@ class Creditagricole
 
         // Check signature if needed
         if ($checkSign) {
-            // Extract signature
-            $matches = [];
-            if (!preg_match('#^(.*)&K=(.*)$#', $data, $matches)) {
-                throw new \LogicException(sprintf('Error Processing Request: %s', __('An unexpected error in Up2pay e-Transactions call has occured: missing signature.')));
-            }
-
-            // Check signature
-            $signature = base64_decode(urldecode($matches[2]));
-            $pubkey = file_get_contents(dirname(__FILE__) . '/../etc/pubkey.pem');
-            $res = (boolean) openssl_verify($matches[1], $signature, $pubkey);
-
-            if (!$res) {
-                if (preg_match('#^C=IDEAL&P=PREPAYEE&(.*)&K=(.*)$#', $data, $matches)) {
-                    $signature = base64_decode(urldecode($matches[2]));
-                    $res = (boolean) openssl_verify($matches[1], $signature, $pubkey);
-                }
-
-                if (!$res) {
-                    throw new \LogicException(sprintf('Error Processing Request: %s', __('An unexpected error in Up2pay e-Transactions call has occured: invalid signature.')));
-                }
+            // Extract & check signature or throw Exception
+            if (!$this->checkSignature($data) && !$this->checkSignature($data, 'pubkey_1024.pem')) {
+                throw new \LogicException(sprintf('Error Processing Request: %s', __('An unexpected error in Up2pay e-Transactions call has occured: invalid signature.')));
             }
         }
 

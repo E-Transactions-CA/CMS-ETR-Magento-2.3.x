@@ -1,4 +1,7 @@
 # Change Log
+## [2.0.11] 2026-02-10
+- Improve backward compatibility regarding signature checks
+
 ## [2.0.10] 2026-01-20
 - Update public key
 - PBX_CMD changes
