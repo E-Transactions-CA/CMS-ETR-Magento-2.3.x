@@ -44,6 +44,7 @@ class Config extends \Magento\Payment\Model\Config
         'rank' => 'merchant/rank',
         'site' => 'merchant/site',
         'subscription' => 'merchant/subscription',
+        'systemUrlPriority' => 'merchant/system_url_priority',
     ];
     private $_urls = [
         'system' => [
@@ -150,7 +151,26 @@ class Config extends \Magento\Payment\Model\Config
 
     public function getSystemUrls($environment = null)
     {
-        return $this->_getUrls('system', $environment);
+        $urls = $this->_getUrls('system', $environment);
+        $environment = is_null($environment) ? $this->getEnvironment() : $environment;
+        if (strtolower($environment) !== 'production') {
+            return $urls;
+        }
+
+        switch ($this->getSystemUrlPriority()) {
+            case 'tpeweb':
+                return [
+                    'https://tpeweb.e-transactions.fr/php/',
+                    'https://tpeweb1.e-transactions.fr/php/',
+                ];
+            case 'tpeweb1':
+                return [
+                    'https://tpeweb1.e-transactions.fr/php/',
+                    'https://tpeweb.e-transactions.fr/php/',
+                ];
+            default:
+                return $urls;
+        }
     }
 
     public function getDirectUrls($environment = null)

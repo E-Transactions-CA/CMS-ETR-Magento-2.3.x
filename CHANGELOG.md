@@ -1,4 +1,8 @@
 # Change Log
+## [2.0.12] 2026-07-06
+- Improve PHP 8.5 compatibility
+- Add production server priority setting
+
 ## [2.0.11] 2026-02-10
 - Improve backward compatibility regarding signature checks
 

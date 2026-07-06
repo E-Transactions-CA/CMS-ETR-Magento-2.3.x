@@ -33,6 +33,7 @@
                 <hmacalgo>SHA512</hmacalgo>
                 <min_amount></min_amount>
                 <max_amount></max_amount>
+                <system_url_priority></system_url_priority>
             </merchant>
             <languages>
                 <fr>FRA</fr>

@@ -1,5 +1,4 @@
-<?xml version="1.0"?>
-<!--
+<?php
 /**
  * Up2pay e-Transactions Etransactions module for Magento
  *
@@ -13,22 +12,23 @@
  * to obtain it through the web, please send a note to
  * support@e-transactions.fr so we can mail you a copy immediately.
  *
- * @version   2.0.12
+ * @version   1.0.11-hmac
  * @author    E-Transactions <support@e-transactions.fr>
  * @copyright 2012-2021 E-Transactions
  * @license   http://opensource.org/licenses/OSL-3.0
  * @link      http://www.e-transactions.fr/
  */
--->
-<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../../../lib/internal/Magento/Framework/Module/etc/module.xsd">
-    <module name="CreditAgricole_Etransactions" setup_version="2.0.12">
-    	<sequence>
-            <module name="Magento_Sales"/>
-            <module name="Magento_Quote"/>
-            <module name="Magento_Payment"/>
-            <module name="Magento_Checkout"/>
-            <module name="Magento_Directory"/>
-            <module name="Magento_Config"/>
-        </sequence>
-    </module>
-</config>
+
+namespace CreditAgricole\Etransactions\Model\Admin;
+
+class SystemUrlPriority implements \Magento\Framework\Option\ArrayInterface
+{
+    public function toOptionArray()
+    {
+        return [
+            ['value' => '', 'label' => __('Default behavior')],
+            ['value' => 'tpeweb1', 'label' => __('Use tpeweb1 first')],
+            ['value' => 'tpeweb', 'label' => __('Use tpeweb first')],
+        ];
+    }
+}
