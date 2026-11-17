@@ -28,6 +28,15 @@ class AdminCreateOrder implements ObserverInterface
 {
     private static $_oldOrder = null;
 
+    /** @var \Magento\Sales\Model\ResourceModel\Order\Payment\Transaction\CollectionFactory */
+    private $transactionCollectionFactory;
+
+    public function __construct(
+        \Magento\Sales\Model\ResourceModel\Order\Payment\Transaction\CollectionFactory $transactionCollectionFactory
+    ) {
+        $this->transactionCollectionFactory = $transactionCollectionFactory;
+    }
+
     public function onBeforeCreate($observer)
     {
         $event = $observer->getEvent();
@@ -58,7 +67,7 @@ class AdminCreateOrder implements ObserverInterface
                 $payment->setEtepSecondPayment($oldPayment->getEtepSecondPayment());
 
                 // Transactions
-                $oldTxns = $this->getObjectManager()->get('Magento\Framework\Model\ResourceModel\Db\TransactionManager')->getCollection();
+                $oldTxns = $this->transactionCollectionFactory->create();
                 $oldTxns->addFilter('payment_id', $oldPayment->getId());
                 foreach ($oldTxns as $oldTxn) {
                     $payment->setTransactionId($oldTxn->getTxnId());

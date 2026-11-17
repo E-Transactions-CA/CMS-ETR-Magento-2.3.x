@@ -23,5 +23,5 @@ namespace CreditAgricole\Etransactions\Model\Admin\Order\Status;
 
 class Pending extends \CreditAgricole\Etransactions\Model\Admin\Order\Status
 {
-    protected $_stateStatuses = \Magento\Sales\Model\Order::STATE_PENDING;
+    protected $_stateStatuses = \Magento\Sales\Model\Order::STATE_PENDING_PAYMENT;
 }

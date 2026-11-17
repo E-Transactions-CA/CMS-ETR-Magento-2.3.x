@@ -27,7 +27,22 @@ use CreditAgricole\Etransactions\Gateway\Response\FraudHandler;
 
 class Info extends ConfigurableInfo
 {
+    protected $_template = 'etep/info/default.phtml';
+
     protected $_object_manager;
+
+    /** @var \Magento\Framework\Serialize\Serializer\Serialize */
+    private $serializer;
+
+    public function __construct(
+        \Magento\Framework\View\Element\Template\Context $context,
+        \Magento\Payment\Gateway\ConfigInterface $config,
+        \Magento\Framework\Serialize\Serializer\Serialize $serializer,
+        array $data = []
+    ) {
+        $this->serializer = $serializer;
+        parent::__construct($context, $config, $data);
+    }
 
     /**
      * Returns label
@@ -59,7 +74,6 @@ class Info extends ConfigurableInfo
     protected function _construct()
     {
         parent::_construct();
-        $this->setTemplate('etep/info/default.phtml');
         $this->_object_manager = \Magento\Framework\App\ObjectManager::getInstance();
     }
 
@@ -88,7 +102,7 @@ class Info extends ConfigurableInfo
             return [];
         }
 
-        return unserialize($this->getInfo()->getEtepAuthorization(), ['allowed_classes' => false]);
+        return $this->serializer->unserialize($this->getInfo()->getEtepAuthorization());
     }
 
     public function getObjectManager()
@@ -203,19 +217,19 @@ class Info extends ConfigurableInfo
         ];
         $data = $info->getEtepFirstPayment();
         if (!empty($data)) {
-            $data = unserialize($data, ['allowed_classes' => false]);
+            $data = $this->serializer->unserialize($data);
             $date = (isset($data['date']) ? preg_replace('/^([0-9]{2})([0-9]{2})([0-9]{4})$/', '$1/$2/$3', $data['date']) : 'N/A');
             $result['first'] = sprintf('%s (%s)', $data['amount'] / 100.0, $date);
         }
         $data = $info->getEtepSecondPayment();
         if (!empty($data)) {
-            $data = unserialize($data, ['allowed_classes' => false]);
+            $data = $this->serializer->unserialize($data);
             $date = (isset($data['date']) ? preg_replace('/^([0-9]{2})([0-9]{2})([0-9]{4})$/', '$1/$2/$3', $data['date']) : 'N/A');
             $result['second'] = sprintf('%s (%s)', $data['amount'] / 100.0, $date);
         }
         $data = $info->getEtepThirdPayment();
         if (!empty($data)) {
-            $data = unserialize($data, ['allowed_classes' => false]);
+            $data = $this->serializer->unserialize($data);
             $date = (isset($data['date']) ? preg_replace('/^([0-9]{2})([0-9]{2})([0-9]{4})$/', '$1/$2/$3', $data['date']) : 'N/A');
             $result['third'] = sprintf('%s (%s)', $data['amount'] / 100.0, $date);
         }
