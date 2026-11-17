@@ -90,8 +90,8 @@ abstract class AbstractPayment extends AbstractMethod
     protected $_objectManager = null;
     protected $_logger = null;
 
-    /** @var \Magento\Sales\Api\OrderRepositoryInterface */
-    protected $orderRepository;
+    /** @var \Magento\Sales\Model\ResourceModel\Order */
+    protected $orderResource;
 
     /** @var \Magento\Framework\Serialize\Serializer\Serialize */
     protected $serializer;
@@ -104,7 +104,7 @@ abstract class AbstractPayment extends AbstractMethod
         \Magento\Payment\Helper\Data $paymentData,
         \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig,
         \Magento\Payment\Model\Method\Logger $logger,
-        \Magento\Sales\Api\OrderRepositoryInterface $orderRepository,
+        \Magento\Sales\Model\ResourceModel\Order $orderResource,
         \Magento\Framework\Serialize\Serializer\Serialize $serializer,
         ?\Magento\Framework\Model\ResourceModel\AbstractResource $resource = null,
         ?\Magento\Framework\Data\Collection\AbstractDb $resourceCollection = null,
@@ -123,7 +123,7 @@ abstract class AbstractPayment extends AbstractMethod
             $data
         );
 
-        $this->orderRepository = $orderRepository;
+        $this->orderResource = $orderResource;
         $this->serializer = $serializer;
         $this->_scopeConfig = $scopeConfig;
         $this->_objectManager = \Magento\Framework\App\ObjectManager::getInstance();
@@ -287,7 +287,7 @@ abstract class AbstractPayment extends AbstractMethod
         debug_print_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
         $order = $payment->getOrder();
         $order->addStatusHistoryComment('Call to cancel()');
-        $this->orderRepository->save($order);
+        $this->orderResource->save($order);
         return;
     }
 
@@ -409,7 +409,7 @@ abstract class AbstractPayment extends AbstractMethod
         $state = Order::STATE_PROCESSING;
         $order->setState($state, $status, __($message));
         $order->setIsInProgress(true);
-        $this->orderRepository->save($order);
+        $this->orderResource->save($order);
 
         return $this;
     }
@@ -891,7 +891,7 @@ abstract class AbstractPayment extends AbstractMethod
 
         $this->logDebug(sprintf('Order %s: %s', $order->getIncrementId(), $message));
 
-        $this->orderRepository->save($order);
+        $this->orderResource->save($order);
     }
 
     /**
@@ -1000,7 +1000,7 @@ abstract class AbstractPayment extends AbstractMethod
             $this->_processingTransaction->setAdditionalInformation(Transaction::RAW_DETAILS, $data);
         }
 
-        $this->orderRepository->save($order);
+        $this->orderResource->save($order);
     }
 
     /**
@@ -1025,7 +1025,7 @@ abstract class AbstractPayment extends AbstractMethod
         $type = Transaction::TYPE_VOID;
         $this->_addCreditagricoleTransaction($order, $type, $data, true);
 
-        $this->orderRepository->save($order);
+        $this->orderResource->save($order);
     }
 
     /**
@@ -1105,7 +1105,7 @@ abstract class AbstractPayment extends AbstractMethod
         $order->setIsCustomerNotified(true);
 
         $payment->save();
-        $this->orderRepository->save($order);
+        $this->orderResource->save($order);
     }
 
     /**

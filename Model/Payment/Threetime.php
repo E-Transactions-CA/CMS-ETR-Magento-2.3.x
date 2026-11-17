@@ -150,6 +150,6 @@ class Threetime extends AbstractPayment
         $payment->setEtepAction('three-time');
 
         $payment->save();
-        $this->orderRepository->save($order);
+        $this->orderResource->save($order);
     }
 }

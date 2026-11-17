@@ -62,7 +62,7 @@ class Ipn extends \CreditAgricole\Etransactions\Controller\Payment
         } catch (\Exception $e) {
             $message = sprintf('(IPN) Exception %s (%s %d).', $e->getMessage(), $e->getFile(), $e->getLine());
             $this->logFatal($message);
-            $this->getResponse()->setHttpResponseCode(500);
+            header('Status: 500 Error', true, 500);
         }
         return $this->getResponse();
     }
