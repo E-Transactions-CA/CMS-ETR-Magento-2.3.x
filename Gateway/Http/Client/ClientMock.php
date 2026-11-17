@@ -43,13 +43,19 @@ class ClientMock implements ClientInterface
      */
     private $logger;
 
+    /** @var \Magento\Payment\Gateway\ConfigInterface */
+    private $config;
+
     /**
      * @param Logger $logger
+     * @param \Magento\Payment\Gateway\ConfigInterface $config
      */
     public function __construct(
-        Logger $logger
+        Logger $logger,
+        \Magento\Payment\Gateway\ConfigInterface $config
     ) {
         $this->logger = $logger;
+        $this->config = $config;
     }
 
     /**
@@ -79,9 +85,9 @@ class ClientMock implements ClientInterface
     public function getCards()
     {
         $result = [];
-        $this->getMethod()->getCards();
+        $cards = $this->config->getValue('cards');
         if (!empty($cards)) {
-            $selected = explode(',', $this->getMethod()->getConfigData('cctypes'));
+            $selected = explode(',', (string) $this->config->getValue('cctypes'));
             foreach ($cards as $code => $card) {
                 if (in_array($code, $selected)) {
                     $result[$code] = $card;
@@ -112,7 +118,7 @@ class ClientMock implements ClientInterface
      */
     protected function generateTxnId()
     {
-        return md5(mt_rand(0, 1000));
+        return bin2hex(random_bytes(16));
     }
 
     /**
@@ -129,7 +135,7 @@ class ClientMock implements ClientInterface
             return (int)$headers['force_result'];
         }
 
-        return $this->results[mt_rand(0, 1)];
+        return $this->results[random_int(0, 1)];
     }
 
     /**

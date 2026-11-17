@@ -58,6 +58,7 @@
     <type name="CreditAgricole\Etransactions\Gateway\Http\Client\ClientMock">
         <arguments>
             <argument name="logger" xsi:type="object">EtepcbLogger</argument>
+            <argument name="config" xsi:type="object">EtepcbConfig</argument>
         </arguments>
     </type>
 
@@ -193,6 +194,7 @@
     <type name="CreditAgricole\Etransactions\Gateway\Http\Client\ClientMock">
         <arguments>
             <argument name="logger" xsi:type="object">EtepthreetimeLogger</argument>
+            <argument name="config" xsi:type="object">EtepthreetimeConfig</argument>
         </arguments>
     </type>
 
@@ -328,6 +330,7 @@
     <type name="CreditAgricole\Etransactions\Gateway\Http\Client\ClientMock">
         <arguments>
             <argument name="logger" xsi:type="object">EtepprepaidLogger</argument>
+            <argument name="config" xsi:type="object">EtepprepaidConfig</argument>
         </arguments>
     </type>
 
@@ -463,6 +466,7 @@
     <type name="CreditAgricole\Etransactions\Gateway\Http\Client\ClientMock">
         <arguments>
             <argument name="logger" xsi:type="object">EteppaybuttonsLogger</argument>
+            <argument name="config" xsi:type="object">EteppaybuttonsConfig</argument>
         </arguments>
     </type>
 
@@ -598,6 +602,7 @@
     <type name="CreditAgricole\Etransactions\Gateway\Http\Client\ClientMock">
         <arguments>
             <argument name="logger" xsi:type="object">EtepprivateLogger</argument>
+            <argument name="config" xsi:type="object">EtepprivateConfig</argument>
         </arguments>
     </type>
 
@@ -733,6 +738,7 @@
     <type name="CreditAgricole\Etransactions\Gateway\Http\Client\ClientMock">
         <arguments>
             <argument name="logger" xsi:type="object">EtepfinancialLogger</argument>
+            <argument name="config" xsi:type="object">EtepfinancialConfig</argument>
         </arguments>
     </type>
 

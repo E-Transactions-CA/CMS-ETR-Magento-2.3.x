@@ -149,6 +149,11 @@ class Config extends \Magento\Payment\Model\Config
         return $value;
     }
 
+    public function getSystemUrlPriority()
+    {
+        return $this->__call('getSystemUrlPriority', []);
+    }
+
     public function getSystemUrls($environment = null)
     {
         $urls = $this->_getUrls('system', $environment);

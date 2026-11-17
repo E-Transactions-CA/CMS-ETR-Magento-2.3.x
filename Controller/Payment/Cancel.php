@@ -66,5 +66,6 @@ class Cancel extends \CreditAgricole\Etransactions\Controller\Payment
 
         // Redirect to cart
         $this->_redirect('checkout/cart');
+        return $this->getResponse();
     }
 }

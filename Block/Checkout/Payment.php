@@ -25,12 +25,7 @@ use Magento\Framework\View\Element\Template;
 
 class Payment extends Template
 {
-    protected function _construct()
-    {
-        parent::_construct();
-
-        $this->setTemplate('etep/checkout-payment.phtml');
-    }
+    protected $_template = 'etep/checkout-payment.phtml';
 
     protected function _prepareLayout()
     {
@@ -83,8 +78,8 @@ class Payment extends Template
         $cards = $this->getCreditCards();
         $html = [];
         foreach ($cards as $card) {
-            $url = $this->htmlEscape($this->getSkinUrl($card['image']));
-            $alt = $this->htmlEscape($card['label']);
+            $url = $this->escapeUrl($this->getViewFileUrl('CreditAgricole_Etransactions::images/' . basename($card['image'])));
+            $alt = $this->escapeHtmlAttr($card['label']);
             $html[] = '<img class="etep-payment-logo" src="'.$url.'" alt="'.$alt.'"/>';
         }
         $html = '<span class="etep-payment-label">'.implode('&nbsp;', $html).'</span>';

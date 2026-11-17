@@ -68,6 +68,7 @@ class Payment extends \Magento\Framework\App\Action\Action implements CsrfAwareA
 
     public function execute()
     {
+        return $this->getResponse();
     }
 
     protected function _redirectResponse($order, $success, $checkUrlWarn = false)
@@ -108,6 +109,7 @@ class Payment extends \Magento\Framework\App\Action\Action implements CsrfAwareA
     {
         $this->_registry->register('etep_forward_nocache', true);
         $this->_forward('defaultNoRoute');
+        return $this->getResponse();
     }
 
     protected function _loadQuoteFromOrder(\Magento\Sales\Model\Order $order)

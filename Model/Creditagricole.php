@@ -599,7 +599,7 @@ class Creditagricole
     protected function createTransactionId(array $creditagricoleData)
     {
         $transaction = (int) (isset($creditagricoleData['transaction']) ? $creditagricoleData['transaction'] : $creditagricoleData['NUMTRANS']);
-        $now = new DateTime('now', new DateTimeZone('Europe/Paris'));
+        $now = new \DateTime('now', new \DateTimeZone('Europe/Paris'));
         return $transaction . '/' . $now->format('U');
     }
 
@@ -679,12 +679,12 @@ class Creditagricole
         // Check signature
         $signature = base64_decode(urldecode($matches[2]));
         $pubkey = file_get_contents(dirname(__FILE__) . '/../etc/' . basename($keyFile));
-        $res = (boolean) openssl_verify($matches[1], $signature, $pubkey);
+        $res = (bool) openssl_verify($matches[1], $signature, $pubkey);
 
         if (!$res) {
             if (preg_match('#^C=IDEAL&P=PREPAYEE&(.*)&K=(.*)$#', $data, $matches)) {
                 $signature = base64_decode(urldecode($matches[2]));
-                $res = (boolean) openssl_verify($matches[1], $signature, $pubkey);
+                $res = (bool) openssl_verify($matches[1], $signature, $pubkey);
             }
         }
 

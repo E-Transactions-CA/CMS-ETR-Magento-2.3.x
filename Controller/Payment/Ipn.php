@@ -64,5 +64,6 @@ class Ipn extends \CreditAgricole\Etransactions\Controller\Payment
             $this->logFatal($message);
             header('Status: 500 Error', true, 500);
         }
+        return $this->getResponse();
     }
 }

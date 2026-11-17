@@ -53,5 +53,6 @@ class Index extends \Magento\Backend\App\Action
         }
 
         $this->_redirect('sales/order/view', ['order_id' => $orderId]);
+        return $this->getResponse();
     }
 }

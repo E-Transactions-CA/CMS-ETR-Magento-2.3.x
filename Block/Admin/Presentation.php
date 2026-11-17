@@ -27,10 +27,9 @@ class Presentation extends Template
 {
     const MODULE_NAME = 'CreditAgricole_Etransactions';
 
-    protected function _construct()
+    public function getTemplate()
     {
-        parent::_construct();
-        $this->setTemplate($this->getHtmlTemplate());
+        return parent::getTemplate() ?: $this->getHtmlTemplate();
     }
 
     public function getHtmlTemplate()

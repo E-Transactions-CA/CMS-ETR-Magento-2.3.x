@@ -34,8 +34,7 @@ class Prepaid extends AbstractPayment
     public function toOptionArray()
     {
         $result = [];
-        $configPath = $this->getConfigPath();
-        $cards = $this->_getConfigValue($configPath);
+        $cards = $this->getCards();
         if (!empty($cards)) {
             foreach ($cards as $code => $card) {
                 $result[] = [
